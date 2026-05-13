@@ -1,0 +1,888 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>人形机器人技术框架图</title>
+    <style>
+      :root {
+        --blue: #4f8fe7;
+        --orange: #ff9f43;
+        --green: #39b56d;
+        --cyan: #4ab3e7;
+        --indigo: #7a87e8;
+        --ink: #24415f;
+        --line: #cdddf0;
+        --soft: #f7fbff;
+        --card: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+        color: #24384f;
+        font-family:
+          "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+      }
+
+      .page {
+        width: min(1500px, 100%);
+        margin: 0 auto;
+        padding: 12px 14px 16px;
+      }
+
+      .title {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .title h1 {
+        margin: 0;
+        font-size: clamp(28px, 2.6vw, 44px);
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #222;
+      }
+
+      .title p {
+        margin: 4px 0 0;
+        font-size: clamp(12px, 1.1vw, 16px);
+        font-weight: 700;
+        color: #3068c7;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 156px;
+        gap: 10px;
+        align-items: start;
+      }
+
+      .content {
+        display: grid;
+        gap: 8px;
+      }
+
+      .layer {
+        color: #fff;
+        border-radius: 8px;
+        min-height: 100%;
+        padding: 8px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(34, 72, 122, 0.12);
+      }
+
+      .layer .icon {
+        font-size: 28px;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .layer .name {
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.05;
+      }
+
+      .layer .sub {
+        margin-top: 6px;
+        font-size: 11px;
+        line-height: 1.3;
+        font-weight: 700;
+      }
+
+      .tech-row {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .tech-row + .tech-row {
+        margin-top: 8px;
+      }
+
+      .row-layer {
+        min-height: 100%;
+      }
+
+      .blue {
+        background: linear-gradient(180deg, #5a97ea 0%, #437fdb 100%);
+      }
+      .orange {
+        background: linear-gradient(180deg, #ffa34a 0%, #f48a12 100%);
+      }
+      .green {
+        background: linear-gradient(180deg, #4bc278 0%, #2ca95f 100%);
+      }
+      .cyan {
+        background: linear-gradient(180deg, #55b9e7 0%, #2c97d0 100%);
+      }
+      .indigo {
+        background: linear-gradient(180deg, #7b8ae9 0%, #5c6fdf 100%);
+      }
+
+      .main {
+        display: grid;
+        gap: 8px;
+      }
+
+      .section {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--soft);
+        padding: 8px;
+        box-shadow: 0 2px 10px rgba(19, 38, 62, 0.05);
+      }
+
+      .section.perception {
+        background: linear-gradient(180deg, #f8fcff 0%, #edf6ff 100%);
+      }
+      .section.cognition {
+        background: linear-gradient(180deg, #fffaf3 0%, #fff4e7 100%);
+      }
+      .section.execution {
+        background: linear-gradient(180deg, #f6fcf8 0%, #ecf9f0 100%);
+      }
+      .section.hardware {
+        background: linear-gradient(180deg, #f7fcff 0%, #edf8fd 100%);
+      }
+      .section.support {
+        background: linear-gradient(180deg, #f8f9ff 0%, #eef1ff 100%);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 12px;
+        color: #2c66bb;
+        font-weight: 800;
+        margin: 0 0 6px;
+      }
+
+      .grid-6 {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .grid-5 {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: 122px;
+        padding: 7px 8px 8px;
+      }
+
+      .card h3 {
+        margin: 0 0 5px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #20528f;
+        text-align: center;
+      }
+
+      .section.cognition .card h3 {
+        color: #c36f00;
+      }
+      .section.execution .card h3 {
+        color: #19804b;
+      }
+      .section.hardware .card h3 {
+        color: #17739e;
+      }
+      .section.support .card h3 {
+        color: #5061d8;
+      }
+
+      .card ul {
+        margin: 0;
+        padding-left: 14px;
+        font-size: 11px;
+        line-height: 1.4;
+        color: #34465a;
+      }
+
+      .arrow-bar {
+        position: relative;
+        text-align: center;
+        color: #2d6abd;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 6px 0 4px;
+      }
+
+      .arrow-bar::before,
+      .arrow-bar::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: calc(50% - 115px);
+        border-top: 2px solid #5d8fd7;
+      }
+
+      .arrow-bar::before {
+        left: 0;
+      }
+      .arrow-bar::after {
+        right: 0;
+      }
+      .arrow-bar span {
+        background: #fff;
+        padding: 0 10px;
+      }
+
+      .arrow-bar.orange {
+        color: #d97c00;
+      }
+
+      .arrow-bar.orange::before,
+      .arrow-bar.orange::after {
+        border-top-color: #f0a45a;
+      }
+
+      .arrow-bar.green {
+        color: #1e9f5b;
+      }
+
+      .arrow-bar.green::before,
+      .arrow-bar.green::after {
+        border-top-color: #4bb66f;
+      }
+
+      .arrow-bar.indigo {
+        color: #5465d9;
+      }
+
+      .arrow-bar.indigo::before,
+      .arrow-bar.indigo::after {
+        border-top-color: #7b88e5;
+      }
+
+      .arrow-bar.no-line::before,
+      .arrow-bar.no-line::after {
+        display: none;
+      }
+
+      .robot-box {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+      }
+
+      .robot-box img {
+        width: 96%;
+        height: 96%;
+        object-fit: contain;
+        display: block;
+      }
+
+      .assistant {
+        display: grid;
+        gap: 8px;
+        align-content: start;
+      }
+
+      .assistant .robot-box {
+        min-height: 260px;
+        padding: 6px;
+      }
+
+      .side-block {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(19, 38, 62, 0.05);
+        padding: 10px 9px;
+      }
+
+      .side-block h3 {
+        margin: 0 0 6px;
+        text-align: center;
+        color: #5b46c9;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .side-block ul {
+        margin: 0;
+        padding-left: 14px;
+        font-size: 11px;
+        line-height: 1.45;
+        color: #38485f;
+      }
+
+      .side-mini {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        padding: 7px 8px;
+        font-size: 11px;
+        line-height: 1.35;
+        text-align: center;
+      }
+
+      .side-mini strong {
+        display: block;
+        font-size: 13px;
+        color: #5b46c9;
+        margin-bottom: 3px;
+      }
+
+      .legend {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 6px;
+        margin-top: 8px;
+        font-size: 11px;
+      }
+
+      .legend div {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        text-align: center;
+        padding: 4px 6px;
+      }
+
+      .scenarios {
+        margin-top: 8px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        padding: 7px 8px;
+      }
+
+      .scenarios h4 {
+        margin: 0 0 6px;
+        font-size: 12px;
+        color: #3c4f67;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .chip {
+        border: 1px solid #d2dff0;
+        background: #f8fbff;
+        color: #40556f;
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .footer-note {
+        margin-top: 8px;
+        text-align: center;
+        color: #607287;
+        font-size: 11px;
+      }
+
+      .support-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 6px;
+      }
+
+      .hardware-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        align-items: stretch;
+      }
+
+      .hardware-grid .card {
+        min-height: 108px;
+        padding: 6px 7px 7px;
+      }
+
+      .hardware-center {
+        display: none;
+      }
+
+      @media (max-width: 1280px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr) 156px;
+        }
+
+        .assistant {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .tech-row {
+          grid-template-columns: 1fr;
+        }
+
+        .grid-6,
+        .grid-5,
+        .grid-4,
+        .support-row,
+        .legend,
+        .hardware-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 640px) {
+        .grid-6,
+        .grid-5,
+        .grid-4,
+        .support-row,
+        .legend,
+        .hardware-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .layer .name {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="title">
+        <h1>人形机器人技术框架图</h1>
+        <p>感知 → 认知 → 决策 → 执行 → 硬件 → 支撑 全栈技术体系</p>
+      </header>
+
+      <div class="layout">
+        <main class="content">
+          <div class="tech-row">
+            <div class="layer blue row-layer">
+              <div class="icon">👁</div>
+              <div class="name">感知层</div>
+              <div class="sub">多模态感知与理解世界</div>
+            </div>
+            <section class="section perception">
+              <div class="grid-6">
+                <article class="card">
+                  <h3>视觉感知</h3>
+                  <ul>
+                    <li>目标检测：YOLOv8/9、RT-DETR</li>
+                    <li>语义分割：DeepLabV3+、SAM</li>
+                    <li>实例分割：Mask R-CNN</li>
+                    <li>3D感知：PointNet++、PV-RCNN</li>
+                    <li>姿态估计：OpenPose、ViTPose</li>
+                    <li>多视图几何：COLMAP、OpenMVG</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>听觉感知</h3>
+                  <ul>
+                    <li>语音识别(ASR)：Whisper、Wenet、Kaldi</li>
+                    <li>语音合成(TTS)：VITS、FastSpeech2</li>
+                    <li>声纹/说话人：ECAPA、SPP-HAT</li>
+                    <li>噪声抑制：RNNoise、Demucs</li>
+                    <li>音频特征：Audio Spectrogram</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>触觉/力觉感知</h3>
+                  <ul>
+                    <li>触觉建模：GelSight、DIGIT</li>
+                    <li>力觉建模：六维力传感器</li>
+                    <li>接触检测：滑动/摩擦感知</li>
+                    <li>触觉识别：CNN、GraphNet、Dex-Net</li>
+                    <li>抓取稳定：基于接触点/压强判断</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>本体感知</h3>
+                  <ul>
+                    <li>状态估计：EKF、UKF、因子图优化</li>
+                    <li>IMU融合：VINS-Fusion、OKVIS</li>
+                    <li>关节反馈：编码器、卡尔曼滤波</li>
+                    <li>动力学建模：RBDL、Pinocchio</li>
+                    <li>温度/电流：传感器融合</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>环境感知与建图</h3>
+                  <ul>
+                    <li>SLAM：ORB-SLAM3、LOAM、RTAB-Map</li>
+                    <li>语义建图：Voxblox、SemanticFusion</li>
+                    <li>占据栅格：OctoMap、Occupancy Grid</li>
+                    <li>NeRF建图：Instant-NGP、NeRF</li>
+                    <li>动态环境：障碍物与可通行区域</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>状态输入处理</h3>
+                  <ul>
+                    <li>时间同步：ROS Time、Chrony</li>
+                    <li>状态融合：Kalman、Factor Graph</li>
+                    <li>噪声滤波：RANSAC、Outlier Removal</li>
+                    <li>数据压缩：ZSTD、LZ4</li>
+                    <li>数据标定：Camera/LiDAR/IMU</li>
+                  </ul>
+                </article>
+              </div>
+              <div class="arrow-bar">
+                <span>多模态数据总线（时间同步 + 标定 + 融合）</span>
+              </div>
+            </section>
+          </div>
+
+          <div class="tech-row">
+            <div class="layer orange row-layer">
+              <div class="icon">🧠</div>
+              <div class="name">认知与<br />决策层</div>
+              <div class="sub">理解意图与规划决策</div>
+            </div>
+            <section class="section cognition">
+              <div class="grid-5">
+                <article class="card">
+                  <h3>认知与理解</h3>
+                  <ul>
+                    <li>目标识别：CLIP、BLIP-2</li>
+                    <li>语义理解：BERT、RoBERTa</li>
+                    <li>多模态推理：LLaVA、Qwen-VL</li>
+                    <li>场景建模：Scene Graph、Visual Grounding</li>
+                    <li>情感识别：AffectNet、Wave2Vec</li>
+                    <li>常识推理：Commonsense Reasoning</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>任务规划与求解</h3>
+                  <ul>
+                    <li>任务分解：Task Decomposition</li>
+                    <li>HTN、LLM-based Decomposition</li>
+                    <li>任务规划器：STRIPS、PDDL、RRT</li>
+                    <li>任务树：Plan/Action Tree</li>
+                    <li>行为树：BehaviorTree.CPP</li>
+                    <li>状态机：Hierarchical FSM</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>轨迹规划</h3>
+                  <ul>
+                    <li>全身轨迹规划：TrajOpt、CHOMP</li>
+                    <li>上肢操作规划：MoveIt2、TAMP</li>
+                    <li>下肢运动规划：MPC、LPM</li>
+                    <li>避障/碰撞检测：RVO、ORCA</li>
+                    <li>接触规划：Contact MPC</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>知识与记忆</h3>
+                  <ul>
+                    <li>世界模型：Objects、Physics Space</li>
+                    <li>知识图谱：Neo4j、RDF</li>
+                    <li>技能库：Skill Library、Motion Primitive</li>
+                    <li>经验记忆：长期/短期记忆</li>
+                    <li>问答增强：RAG、检索记忆</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>决策引擎</h3>
+                  <ul>
+                    <li>规则引擎：Drools</li>
+                    <li>优化求解器：CasADi、IPOPT、Gurobi</li>
+                    <li>策略学习：PPO、SAC、TD3、DDPG</li>
+                    <li>模型学习：BC、GAIL、Diffusion Policy</li>
+                    <li>大模型推理：GPT、Qwen、LLaMA</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div class="tech-row">
+            <div class="layer green row-layer">
+              <div class="icon">🦾</div>
+              <div class="name">执行层</div>
+              <div class="sub">运动控制与操作执行</div>
+            </div>
+            <section class="section execution">
+              <div class="grid-5">
+                <article class="card">
+                  <h3>运动控制</h3>
+                  <ul>
+                    <li>全身控制：WBC、QP</li>
+                    <li>模型预测：MPC</li>
+                    <li>步态控制：PID、LQR</li>
+                    <li>轨迹跟踪：阻抗控制、导纳控制</li>
+                    <li>足端规划：ZMP、LPM、Raibert</li>
+                    <li>Preview Control</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>操作控制</h3>
+                  <ul>
+                    <li>抓取规划：GraspIt、Dex-Net</li>
+                    <li>双臂协同：Task Space Control</li>
+                    <li>柔顺控制：Impedance Control</li>
+                    <li>遥操作：ActTeleop、VR</li>
+                    <li>示教学习：DMP、Imitation</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>人机交互</h3>
+                  <ul>
+                    <li>语音交互：ASR + TTS</li>
+                    <li>视觉交互：Whisper、VITS</li>
+                    <li>手势识别：MediaPipe、OpenPose</li>
+                    <li>情感识别：FER、AffectNet</li>
+                    <li>多模态对话：LLM + VLM</li>
+                    <li>社交情感：EMG、EEG</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>安全与监控</h3>
+                  <ul>
+                    <li>碰撞检测：FCL、Bullet</li>
+                    <li>力/位限幅：Safe-ISAX</li>
+                    <li>安全标准：ISO 13849、ISO 10218</li>
+                    <li>故障隔离：隔离/降级策略</li>
+                    <li>日志与审计：事件记录、状态追踪</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>控制中枢</h3>
+                  <ul>
+                    <li>ROS 2：Humble/Iron</li>
+                    <li>DDS：FastDDS、CycloneDDS</li>
+                    <li>实时系统：RTOS、FreeRTOS</li>
+                    <li>任务调度：优先级队列</li>
+                    <li>状态机与生命周期管理</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div class="tech-row">
+            <div class="layer cyan row-layer">
+              <div class="icon">🤖</div>
+              <div class="name">硬件层</div>
+              <div class="sub">机器人本体与计算平台</div>
+            </div>
+            <section class="section hardware">
+              <div class="hardware-grid">
+                <article class="card">
+                  <h3>感知硬件</h3>
+                  <ul>
+                    <li>相机：Realsense、ZED、Orbbec</li>
+                    <li>激光雷达：Velodyne、Livox</li>
+                    <li>惯性测量：Bosch BMI088、Xsens</li>
+                    <li>麦克风：ReSpeaker</li>
+                    <li>力/力矩：ATI、Robotiq</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>计算与存储</h3>
+                  <ul>
+                    <li>边缘计算：NVIDIA Jetson Orin</li>
+                    <li>工业主机：Intel NUC、Advantech</li>
+                    <li>加速器：NVIDIA GPU、FPGA</li>
+                    <li>存储：NVMe SSD、eMMC</li>
+                    <li>内存：LPDDR5、DDR5</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>结构与外形</h3>
+                  <ul>
+                    <li>骨架设计：铝合金、碳纤维</li>
+                    <li>材料：轻量化复合材料</li>
+                    <li>关节布局：自由度、覆盖范围</li>
+                    <li>防护设计：IP 评级、散热风道</li>
+                    <li>线束管理：走线槽、软硬隔离</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>执行器</h3>
+                  <ul>
+                    <li>无刷电机：Maxon、T-Motor</li>
+                    <li>伺服驱动：Elmo、ODrive</li>
+                    <li>关节模组：谐波减速器、行星减速器</li>
+                    <li>直驱/推杆：电动推杆、丝杠</li>
+                    <li>气动/限位：SMC、Festool</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>灵巧手/末端执行器</h3>
+                  <ul>
+                    <li>多指灵巧手：Shadow Hand</li>
+                    <li>夹爪：Robotiq、OnRobot</li>
+                    <li>末端平台：Pablo、Schmalz</li>
+                    <li>工具快换：ATI QC、Robotiq QC</li>
+                    <li>触觉反馈：触觉阵列、压力传感</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>能源系统（硬件）</h3>
+                  <ul>
+                    <li>电池：锂电池（Li-ion/LiFePO4）</li>
+                    <li>电源管理：BMS、PMIC</li>
+                    <li>供电模块：DC-DC、AC-DC</li>
+                    <li>快速切换：GAN、冗余供电</li>
+                    <li>能量回收：再生制动、超级电容</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div class="tech-row">
+            <div class="layer indigo row-layer">
+              <div class="icon">☁</div>
+              <div class="name">支撑层</div>
+              <div class="sub">基础设施与系统保障</div>
+            </div>
+            <section class="section support">
+              <div class="support-row">
+                <article class="card">
+                  <h3>能源系统</h3>
+                  <ul>
+                    <li>电池管理（BMS）</li>
+                    <li>能量智能优化</li>
+                    <li>供需与分配管理</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>通信系统</h3>
+                  <ul>
+                    <li>Wi-Fi 6/7, 5G/6G</li>
+                    <li>ROS 2 DDS</li>
+                    <li>CAN / EtherCAT</li>
+                    <li>OPC UA, Modbus</li>
+                    <li>实时通信协议</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>安全与可靠性</h3>
+                  <ul>
+                    <li>功能安全（ISO 13849）</li>
+                    <li>网络安全与访问控制</li>
+                    <li>监测与故障保护</li>
+                    <li>冗余与容错设计</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>运维与管理</h3>
+                  <ul>
+                    <li>远程监控与诊断</li>
+                    <li>日志与告警（ELK）</li>
+                    <li>OTA升级与配置管理</li>
+                    <li>设备资产管理</li>
+                  </ul>
+                </article>
+                <article class="card">
+                  <h3>数据与云平台</h3>
+                  <ul>
+                    <li>Kafka、MinIO、HDFS</li>
+                    <li>流处理：Spark、Flink</li>
+                    <li>模型训练与部署：Kubeflow、MLflow</li>
+                    <li>运维协同：边缘/云端训练</li>
+                  </ul>
+                </article>
+              </div>
+
+              <div class="arrow-bar indigo no-line">
+                <span
+                  >闭环数据驱动（感知数据 → 认知决策 → 执行反馈 → 数据沉淀 →
+                  模型优化）</span
+                >
+              </div>
+
+              <div class="scenarios">
+                <h4>应用场景</h4>
+                <div class="chips">
+                  <span class="chip">工业制造</span>
+                  <span class="chip">物流搬运</span>
+                  <span class="chip">家庭服务</span>
+                  <span class="chip">医疗康养</span>
+                  <span class="chip">教育娱乐</span>
+                  <span class="chip">科研探索</span>
+                  <span class="chip">应急救援</span>
+                  <span class="chip">更多场景</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </main>
+
+        <aside class="assistant">
+          <div class="robot-box">
+            <img src="./assets/robot .png" alt="机器人本体" />
+          </div>
+          <div class="side-block">
+            <h3>开发与工具链</h3>
+            <ul>
+              <li>模型训练与评估 (PyTorch / TensorFlow)</li>
+              <li>仿真平台 (Gazebo / Isaac Sim)</li>
+              <li>数据标注与仿真验证</li>
+              <li>数据可视化与管理平台 (Label Studio / CVAT)</li>
+              <li>可视化与监控工具 (RViz / Foxglove)</li>
+              <li>调试与日志系统 (ELK Stack)</li>
+              <li>CI/CD 与版本管理 (Jenkins / GitLab CI)</li>
+              <li>机器人中间件 (ROS2)</li>
+              <li>API / SDK</li>
+            </ul>
+          </div>
+
+          <div class="side-mini">
+            <strong>训练与学习</strong>
+            模仿学习（IL）：BC、Dagger、GAIL
+            <br />强化学习（RL）：PPO、SAC、TD3 <br />自监督学习：BYOL、SimCLR
+            <br />迁移学习：Domain Adaptation <br />多任务学习：MTL、Cross-Task
+            <br />对比学习：InfoNCE、MoCo <br />大模型微调：LoRA、QLoRA
+          </div>
+
+          <div class="side-mini">
+            <strong>仿真与测试</strong>
+            物理仿真（动力学）：MuJoCo、PyBullet
+            <br />传感仿真：Isaac Sim、Gazebo <br />场景仿真：Omniverse
+            Replicator <br />硬件在环 (HIL) 测试 <br />系统级集成与验证
+            <br />性能与鲁棒性测试
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      const image = document.querySelector(".robot-box img");
+      image.addEventListener("error", () => {
+        image.src = "./assets/robot.png";
+      });
+    </script>
+  </body>
+</html>

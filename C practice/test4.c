@@ -83,42 +83,42 @@
 
 //写一个函数判断一个数是否是素数
 //打印100-200之间的素数
-//#include <math.h>
-// int main()
-// {
-//     int i=0;
-//     for(i=100;i<=200;i++)// 也可以从奇数开始循环，i=101;i<=200;i+=2  这样就不需要判断偶数了
-//     {
-//         int j=0;
-//         int flag=1;//flag用来标记是否是素数，初始值为1，表示假设是素数
-//         for(j=2;j<i;j++)//j<=sqrt(i)
-//         {
-//             if(i%j==0)//如果i能被j整除，说明i不是素数
-//             {
-//                 flag=0;//把flag的值改为0，表示i不是素数
-//                 break;//跳出循环，不需要继续判断了
-//             }
-//         }
-//         if(flag==1)//如果flag的值还是1，说明i是素数
-//         {
-//             printf("%d\n",i);
-//         }
-//     }
-//     return 0;   
-// }
+#include <math.h>
+int main()
+{
+    int i=0;
+    for(i=100;i<=200;i++)// 也可以从奇数开始循环，i=101;i<=200;i+=2  这样就不需要判断偶数了
+    {
+        int j=0;
+        int flag=1;//flag用来标记是否是素数，初始值为1，表示假设是素数
+        for(j=2;j<i;j++)//j<=sqrt(i)
+        {
+            if(i%j==0)//如果i能被j整除，说明i不是素数
+            {
+                flag=0;//把flag的值改为0，表示i不是素数
+                break;//跳出循环，不需要继续判断了
+            }
+        }
+        if(flag==1)//如果flag的值还是1，说明i是素数
+        {
+            printf("%d\n",i);
+        }
+    }
+    return 0;   
+}
 
-// is_prime(int n)
-// {
-//     int i=0;
-//     for(i=2;i<=sqrt(n);i++)
-//     {
-//         if(n%i==0)
-//         {
-//             return 0;//不是素数
-//         }
-//     }
-//     return 1;//是素数
-// }
+is_prime(int n)
+{
+    int i=0;
+    for(i=2;i<=sqrt(n);i++)
+    {
+        if(n%i==0)
+        {
+            return 0;//不是素数
+        }
+    }
+    return 1;//是素数
+}
 
 
 

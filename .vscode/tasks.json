@@ -36,9 +36,9 @@
         "-g",
         "${file}",
         //"*.c",
+        //"*.cpp",
         "-o",
-        //"${fileDirname}\\${fileBasenameNoExtension}.exe"
-        "${fileDirname}\\program.exe"
+        "${fileDirname}\\${fileBasenameNoExtension}.exe"
       ],
       "options": {
         "cwd": "D:/Desktop/MinGW/bin"

@@ -234,7 +234,7 @@
 //     {
 //         printf("%d\n",i);
 //         i++;
-//     } while (i<=10);
+//     } while (i<1);
     
 //     return 0;
 // }  
@@ -277,20 +277,20 @@
 // }
 
 
-int main()
-{
-     int n=1;
-     int i=1;
-     int sum=0;
-     int ret=1;
-    for( n=1;n<=3;n++)
-    {
-        ret=ret*n;
-        sum=sum+ret;
-    }
-    printf("%d\n",sum);
-    return 0;
-}
+// int main()
+// {
+//      int n=1;
+//      int i=1;
+//      int sum=0;
+//      int ret=1;
+//     for( n=1;n<=3;n++)
+//     {
+//         ret=ret*n;
+//         sum=sum+ret;
+//     }
+//     printf("%d\n",sum);
+//     return 0;
+// }
 
 //在有序数组里面找数字n
 // int main()
@@ -319,7 +319,7 @@ int main()
 // //二分查找
 // int main()
 // {
-// int arr[]={1,3,5,7,9,11,13,15,17,19};
+// int arr[]={1,3,5,7,9,11,13,15,17,19};//有序数组
 //      int n=7;//查找数字7
 //      int i=0;
 //      int size=sizeof(arr)/sizeof(arr[0]);
@@ -348,3 +348,36 @@ int main()
 //     }
 //     return 0;
 // } 
+
+int main()
+{
+   int arr[]={1,2,4,5,6,8,9,11};
+   int n=0;
+   int len=sizeof(arr)/sizeof(arr[0]);
+   printf("请输入要查找的数字：\n");
+   scanf("%d",&n);
+   int left=0;
+   int right=len-1;
+   while(left<=right)
+   {
+      int mid=(right+left)/2;
+      if(n>arr[mid])
+      {
+         left=mid+1;
+         
+      }
+      else if(n<arr[mid])
+      {
+         right=mid-1;
+      }
+      else
+      {
+         printf("找到了，下标是%d\n",mid);
+         break;
+      }
+   }
+    if(left>right)
+     {
+         printf("没找到\n");
+     }
+   }
